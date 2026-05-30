@@ -1,0 +1,73 @@
+// Generador del cliente Prisma y fuente de conexión a PostgreSQL
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Usuario — entidad raíz para autenticación y propiedad de proyectos
+// ---------------------------------------------------------------------------
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String    // Hash bcrypt; nunca se expone en las respuestas de la API
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Proyecto — pertenece a un único usuario (relación 1:N)
+// ---------------------------------------------------------------------------
+model Project {
+  id        String   @id @default(uuid())
+  name      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("projects")
+}
+
+// ---------------------------------------------------------------------------
+// Enums de dominio para el ciclo de vida y prioridad de las tareas
+// ---------------------------------------------------------------------------
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// ---------------------------------------------------------------------------
+// Tarea — siempre ligada a un proyecto; hereda la propiedad vía Project.userId
+// ---------------------------------------------------------------------------
+model Task {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  status      TaskStatus   @default(PENDING)
+  priority    TaskPriority @default(MEDIUM)
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([projectId])
+  @@map("tasks")
+}
