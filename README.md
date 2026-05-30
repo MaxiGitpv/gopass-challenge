@@ -1,25 +1,38 @@
 # gopass-challenge
 
-Backend de prueba técnica — Node.js, Express, Prisma, PostgreSQL y TypeScript con Clean Architecture.
+Prueba técnica fullstack — gestión de proyectos y tareas con IA.
+
+**Backend:** Node.js, Express, Prisma 7, PostgreSQL, TypeScript (Clean Architecture)  
+**Frontend:** React, Vite, Tailwind CSS, TanStack Query, Zustand
 
 ## Requisitos
 
-- Node.js 18+
+- Node.js 20+
 - PostgreSQL en ejecución local
 
-## Instalación
+## Backend
 
 ```bash
 npm install
 cp .env.example .env   # Ajustar DATABASE_URL y OPENAI_API_KEY
-npx prisma generate
-npx prisma migrate dev --name init
+npx prisma migrate dev --name init   # Solo la primera vez
 npm run dev
 ```
 
-El servidor queda disponible en `http://localhost:3000`.
+API disponible en `http://localhost:3000`.
 
-## Endpoints
+## Frontend
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+App disponible en `http://localhost:5173` (proxy `/api` → backend).
+
+## Endpoints API
 
 | Método | Ruta | Auth |
 |---|---|---|
@@ -34,11 +47,8 @@ El servidor queda disponible en `http://localhost:3000`.
 ## Estructura
 
 ```
-src/
-├── config/        # Variables de entorno y Prisma
-├── middlewares/   # JWT y manejo de errores
-├── routes/        # Definición de endpoints
-├── controllers/   # Extracción de req y respuesta HTTP
-├── services/      # Lógica de negocio
-└── utils/         # bcrypt, JWT
+├── src/              # Backend (Express + Prisma)
+├── frontend/src/     # Frontend (React + Vite)
+├── prisma/           # Schema y migraciones
+└── prisma.config.ts  # Configuración Prisma 7
 ```

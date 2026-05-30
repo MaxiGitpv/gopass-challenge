@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-gopass-950 text-gopass-50 antialiased;
+    background-image: theme('backgroundImage.gopass-gradient');
+    background-attachment: fixed;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  /* Clase reutilizable para paneles con efecto glassmorphism */
+  .glass-panel {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-glass;
+  }
+}

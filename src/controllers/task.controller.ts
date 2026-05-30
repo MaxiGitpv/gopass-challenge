@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { TaskStatus, TaskPriority } from '@prisma/client';
+import { TaskStatus, TaskPriority } from '../generated/prisma/client';
 import { getAuthUserId, getRouteParam } from '../utils/params.util';
 import {
   getTasksByProject,

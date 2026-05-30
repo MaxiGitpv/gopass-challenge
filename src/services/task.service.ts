@@ -1,4 +1,4 @@
-import { Task, TaskStatus, TaskPriority } from '@prisma/client';
+import { Task, TaskStatus, TaskPriority } from '../generated/prisma/client';
 import { prisma } from '../config/database';
 
 /** Datos necesarios para crear una tarea */
