@@ -1,9 +1,7 @@
 import dotenv from 'dotenv';
 
-// Carga variables desde .env antes de que cualquier módulo las consuma
 dotenv.config();
 
-/** Variables de entorno tipadas — falla al arrancar si falta alguna obligatoria */
 interface EnvConfig {
   PORT: number;
   DATABASE_URL: string;

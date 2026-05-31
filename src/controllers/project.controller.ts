@@ -8,7 +8,6 @@ import {
   deleteProject,
 } from '../services/project.service';
 
-/** GET /api/projects — lista todos los proyectos del usuario autenticado */
 export async function listProjects(
   req: Request,
   res: Response,
@@ -22,7 +21,6 @@ export async function listProjects(
   }
 }
 
-/** GET /api/projects/:id — devuelve un proyecto por su ID */
 export async function getProject(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const project = await getProjectById(getRouteParam(req.params, 'id'), getAuthUserId(req));
@@ -32,7 +30,6 @@ export async function getProject(req: Request, res: Response, next: NextFunction
   }
 }
 
-/** POST /api/projects — crea un proyecto asociado al usuario autenticado */
 export async function createProjectHandler(
   req: Request,
   res: Response,
@@ -47,7 +44,6 @@ export async function createProjectHandler(
   }
 }
 
-/** PUT /api/projects/:id — actualiza el nombre del proyecto */
 export async function updateProjectHandler(
   req: Request,
   res: Response,
@@ -64,7 +60,6 @@ export async function updateProjectHandler(
   }
 }
 
-/** DELETE /api/projects/:id — elimina el proyecto y sus tareas en cascada */
 export async function deleteProjectHandler(
   req: Request,
   res: Response,

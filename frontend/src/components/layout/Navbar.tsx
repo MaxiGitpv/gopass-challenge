@@ -24,18 +24,13 @@ export function Navbar({ title = 'GoPass', showBack = false, backTo = '/dashboar
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3">
           {showBack && (
-            <Link
-              to={backTo}
-              className="rounded-lg p-2 text-gopass-400 transition hover:bg-white/10 hover:text-gopass-200"
-            >
+            <Link to={backTo} className="rounded-lg p-2 text-gopass-400 transition hover:bg-white/10 hover:text-gopass-200">
               <ArrowLeft className="h-5 w-5" />
             </Link>
           )}
           <div>
             <h1 className="text-lg font-bold text-gopass-300">{title}</h1>
-            {user && (
-              <p className="text-xs text-gopass-500">{user.email}</p>
-            )}
+            {user && <p className="text-xs text-gopass-500">{user.email}</p>}
           </div>
         </div>
         <Button variant="ghost" onClick={handleLogout} className="!px-3">

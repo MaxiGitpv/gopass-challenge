@@ -7,7 +7,6 @@ interface AuthLayoutProps {
   subtitle: string;
 }
 
-/** Layout compartido para Login y Register con branding glassmorphism */
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">

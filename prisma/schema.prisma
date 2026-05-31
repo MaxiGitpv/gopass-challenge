@@ -1,4 +1,3 @@
-// Generador del cliente Prisma y fuente de conexión a PostgreSQL
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -8,13 +7,10 @@ datasource db {
   provider = "postgresql"
 }
 
-// ---------------------------------------------------------------------------
-// Usuario — entidad raíz para autenticación y propiedad de proyectos
-// ---------------------------------------------------------------------------
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
-  password  String    // Hash bcrypt; nunca se expone en las respuestas de la API
+  password  String
   name      String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -23,9 +19,6 @@ model User {
   @@map("users")
 }
 
-// ---------------------------------------------------------------------------
-// Proyecto — pertenece a un único usuario (relación 1:N)
-// ---------------------------------------------------------------------------
 model Project {
   id        String   @id @default(uuid())
   name      String
@@ -39,9 +32,6 @@ model Project {
   @@map("projects")
 }
 
-// ---------------------------------------------------------------------------
-// Enums de dominio para el ciclo de vida y prioridad de las tareas
-// ---------------------------------------------------------------------------
 enum TaskStatus {
   PENDING
   IN_PROGRESS
@@ -54,9 +44,6 @@ enum TaskPriority {
   HIGH
 }
 
-// ---------------------------------------------------------------------------
-// Tarea — siempre ligada a un proyecto; hereda la propiedad vía Project.userId
-// ---------------------------------------------------------------------------
 model Task {
   id          String       @id @default(uuid())
   title       String

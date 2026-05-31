@@ -9,12 +9,10 @@ import {
   type CreateTaskPayload,
   type UpdateTaskPayload,
 } from '../api/tasks.api';
-
 import { PROJECTS_KEY } from './useProjects';
 
 export const tasksKey = (projectId: string) => ['tasks', projectId] as const;
 
-/** Invalida la lista de proyectos para refrescar contadores en el dashboard */
 function invalidateProjectCounts(queryClient: ReturnType<typeof useQueryClient>) {
   queryClient.invalidateQueries({ queryKey: PROJECTS_KEY });
 }
@@ -66,7 +64,6 @@ export function useDeleteTask(projectId: string) {
   });
 }
 
-/** Llama al endpoint de IA y crea las tareas sugeridas en el proyecto */
 export function useAiTaskSuggestions(projectId: string, projectName: string) {
   const queryClient = useQueryClient();
 

@@ -33,6 +33,7 @@ export function DashboardPage() {
       onSuccess: () => {
         setProjectName('');
         setShowCreateModal(false);
+
       },
     });
   };
@@ -74,6 +75,7 @@ export function DashboardPage() {
           </Button>
         </div>
 
+        {}
         {isLoading && <LoadingSpinner message="Cargando proyectos..." />}
 
         {isError && (
@@ -97,6 +99,7 @@ export function DashboardPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <div key={project.id} className="glass-panel group p-5 transition hover:border-gopass-400/20">
+                {}
                 <Link to={`/projects/${project.id}`} className="block">
                   <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gopass-500/20">
                     <FolderKanban className="h-5 w-5 text-gopass-400" />
@@ -151,11 +154,7 @@ export function DashboardPage() {
         </form>
       </Modal>
 
-      <Modal
-        isOpen={showEditModal}
-        onClose={() => setShowEditModal(false)}
-        title="Editar proyecto"
-      >
+      <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)} title="Editar proyecto">
         <form onSubmit={handleEdit} className="flex flex-col gap-4">
           <Input
             label="Nombre del proyecto"

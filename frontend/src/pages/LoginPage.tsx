@@ -16,10 +16,7 @@ export function LoginPage() {
   };
 
   return (
-    <AuthLayout
-      title="Iniciar sesión"
-      subtitle="Gestiona tus proyectos y tareas"
-    >
+    <AuthLayout title="Iniciar sesión" subtitle="Gestiona tus proyectos y tareas">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
           label="Email"
@@ -39,6 +36,7 @@ export function LoginPage() {
           required
           autoComplete="current-password"
         />
+        {}
         <Button type="submit" fullWidth isLoading={login.isPending}>
           Entrar
         </Button>

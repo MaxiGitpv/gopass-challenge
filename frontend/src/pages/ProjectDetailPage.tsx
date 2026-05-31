@@ -22,9 +22,12 @@ import type { TaskCounts, TaskStatus } from '../types';
 const KANBAN_COLUMNS: TaskStatus[] = ['PENDING', 'IN_PROGRESS', 'DONE'];
 
 export function ProjectDetailPage() {
+
   const { projectId = '' } = useParams<{ projectId: string }>();
+
   const { data: project, isLoading: loadingProject } = useProject(projectId);
   const { data: tasks, isLoading: loadingTasks } = useTasks(projectId);
+
   const createTask = useCreateTask(projectId);
   const updateTask = useUpdateTask(projectId);
   const deleteTask = useDeleteTask(projectId);
@@ -42,6 +45,7 @@ export function ProjectDetailPage() {
       { title: title.trim(), description: description.trim() || undefined },
       {
         onSuccess: () => {
+
           setTitle('');
           setDescription('');
           setShowCreateModal(false);
@@ -95,7 +99,6 @@ export function ProjectDetailPage() {
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         {!loadingTasks && <ProjectTaskCounters counts={taskCounts} />}
 
-        {/* Barra de acciones del proyecto */}
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <Button onClick={() => setShowCreateModal(true)}>
             <Plus className="h-4 w-4" />
@@ -131,6 +134,7 @@ export function ProjectDetailPage() {
         )}
       </main>
 
+      {}
       {aiSuggestions.isPending && <AiLoadingOverlay />}
 
       <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Nueva tarea">

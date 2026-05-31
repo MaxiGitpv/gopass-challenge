@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "Backend de prueba técnica — Clean Architecture con Express, Prisma y PostgreSQL",
   "main": "dist/server.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "prisma generate && tsx watch src/server.ts",
     "build": "prisma generate && tsc",
-    "start": "node dist/server.js",
+    "start": "npx prisma migrate deploy && node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev && prisma generate",
     "prisma:studio": "prisma studio"

@@ -26,9 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             'transition-all duration-200',
             error ? 'border-red-400/50 focus:ring-red-400/30' : '',
             className,
-          ]
-            .filter(Boolean)
-            .join(' ')}
+          ].filter(Boolean).join(' ')}
           {...props}
         />
         {error && <p className="text-xs text-red-400">{error}</p>}

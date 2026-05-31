@@ -11,10 +11,12 @@ export function useLogin() {
   return useMutation({
     mutationFn: (payload: LoginPayload) => loginRequest(payload),
     onSuccess: (data) => {
+
       setAuth(data.user, data.token);
       toast.success(`Bienvenido, ${data.user.name ?? data.user.email}`);
       navigate('/dashboard');
     },
+
   });
 }
 

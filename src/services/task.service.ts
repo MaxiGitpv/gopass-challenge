@@ -1,7 +1,6 @@
 import { Task, TaskStatus, TaskPriority } from '../generated/prisma/client';
 import { prisma } from '../config/database';
 
-/** Datos necesarios para crear una tarea */
 interface CreateTaskInput {
   title: string;
   description?: string;
@@ -9,7 +8,6 @@ interface CreateTaskInput {
   priority?: TaskPriority;
 }
 
-/** Todos los campos de una tarea son opcionales al actualizar */
 interface UpdateTaskInput {
   title?: string;
   description?: string;
@@ -17,11 +15,6 @@ interface UpdateTaskInput {
   priority?: TaskPriority;
 }
 
-/**
- * Verifica que el proyecto pertenezca al usuario autenticado antes de
- * operar sobre sus tareas. Centraliza la lógica de autorización de tareas
- * evitando repetirla en cada función del servicio.
- */
 async function assertProjectOwnership(projectId: string, userId: string): Promise<void> {
   const project = await prisma.project.findUnique({ where: { id: projectId } });
 
@@ -40,10 +33,6 @@ async function assertProjectOwnership(projectId: string, userId: string): Promis
   }
 }
 
-/**
- * Helper que busca una tarea por ID dentro de un proyecto.
- * Lanza 404 si no existe o no pertenece al proyecto dado.
- */
 async function findTaskInProject(taskId: string, projectId: string): Promise<Task> {
   const task = await prisma.task.findFirst({
     where: { id: taskId, projectId },
@@ -58,7 +47,6 @@ async function findTaskInProject(taskId: string, projectId: string): Promise<Tas
   return task;
 }
 
-/** Lista todas las tareas de un proyecto verificando la propiedad */
 export async function getTasksByProject(projectId: string, userId: string): Promise<Task[]> {
   await assertProjectOwnership(projectId, userId);
   return prisma.task.findMany({
@@ -67,7 +55,6 @@ export async function getTasksByProject(projectId: string, userId: string): Prom
   });
 }
 
-/** Devuelve una tarea específica dentro de un proyecto del usuario */
 export async function getTaskById(
   taskId: string,
   projectId: string,
@@ -77,7 +64,6 @@ export async function getTaskById(
   return findTaskInProject(taskId, projectId);
 }
 
-/** Crea una tarea dentro del proyecto indicado */
 export async function createTask(
   projectId: string,
   userId: string,
@@ -96,7 +82,6 @@ export async function createTask(
   });
 }
 
-/** Actualiza los campos enviados de una tarea, sin tocar los omitidos */
 export async function updateTask(
   taskId: string,
   projectId: string,
@@ -112,7 +97,6 @@ export async function updateTask(
   });
 }
 
-/** Elimina una tarea verificando que el proyecto pertenezca al usuario */
 export async function deleteTask(
   taskId: string,
   projectId: string,

@@ -13,14 +13,12 @@ export function RegisterPage() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     register.mutate({ name: name || undefined, email, password });
   };
 
   return (
-    <AuthLayout
-      title="Crear cuenta"
-      subtitle="Empieza a organizar tus proyectos hoy"
-    >
+    <AuthLayout title="Crear cuenta" subtitle="Empieza a organizar tus proyectos hoy">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
           label="Nombre"

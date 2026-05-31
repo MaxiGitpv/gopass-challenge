@@ -10,29 +10,15 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    'bg-gopass-500 hover:bg-gopass-400 text-gopass-950 shadow-lg shadow-gopass-500/25',
-  secondary:
-    'bg-white/10 hover:bg-white/15 text-gopass-100 border border-white/10',
+  primary: 'bg-gopass-500 hover:bg-gopass-400 text-gopass-950 shadow-lg shadow-gopass-500/25',
+  secondary: 'bg-white/10 hover:bg-white/15 text-gopass-100 border border-white/10',
   ghost: 'bg-transparent hover:bg-white/5 text-gopass-300',
   danger: 'bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30',
-  neon:
-    'bg-gradient-to-r from-gopass-400 via-emerald-300 to-gopass-500 text-gopass-950 font-semibold shadow-neon hover:shadow-[0_0_30px_rgba(52,211,153,0.6)] animate-pulse hover:animate-none',
+  neon: 'bg-gradient-to-r from-gopass-400 via-emerald-300 to-gopass-500 text-gopass-950 font-semibold shadow-neon hover:shadow-[0_0_30px_rgba(52,211,153,0.6)] animate-pulse hover:animate-none',
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant = 'primary',
-      isLoading = false,
-      fullWidth = false,
-      disabled,
-      className = '',
-      children,
-      ...props
-    },
-    ref
-  ) => (
+  ({ variant = 'primary', isLoading = false, fullWidth = false, disabled, className = '', children, ...props }, ref) => (
     <button
       ref={ref}
       disabled={disabled || isLoading}
@@ -42,9 +28,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         fullWidth ? 'w-full' : '',
         variantStyles[variant],
         className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      ].filter(Boolean).join(' ')}
       {...props}
     >
       {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}

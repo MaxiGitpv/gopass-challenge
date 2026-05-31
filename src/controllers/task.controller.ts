@@ -10,7 +10,6 @@ import {
 } from '../services/task.service';
 import { suggestTasks } from '../services/ai.service';
 
-/** GET /api/projects/:projectId/tasks */
 export async function listTasks(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const tasks = await getTasksByProject(getRouteParam(req.params, 'projectId'), getAuthUserId(req));
@@ -20,7 +19,6 @@ export async function listTasks(req: Request, res: Response, next: NextFunction)
   }
 }
 
-/** GET /api/projects/:projectId/tasks/:taskId */
 export async function getTask(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const task = await getTaskById(
@@ -34,7 +32,6 @@ export async function getTask(req: Request, res: Response, next: NextFunction): 
   }
 }
 
-/** POST /api/projects/:projectId/tasks */
 export async function createTaskHandler(
   req: Request,
   res: Response,
@@ -60,7 +57,6 @@ export async function createTaskHandler(
   }
 }
 
-/** PUT /api/projects/:projectId/tasks/:taskId */
 export async function updateTaskHandler(
   req: Request,
   res: Response,
@@ -86,7 +82,6 @@ export async function updateTaskHandler(
   }
 }
 
-/** DELETE /api/projects/:projectId/tasks/:taskId */
 export async function deleteTaskHandler(
   req: Request,
   res: Response,
@@ -104,7 +99,6 @@ export async function deleteTaskHandler(
   }
 }
 
-/** POST /api/projects/:projectId/tasks/suggestions — sugerencias IA vía OpenAI */
 export async function getTaskSuggestions(
   req: Request,
   res: Response,

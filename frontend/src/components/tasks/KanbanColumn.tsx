@@ -46,9 +46,7 @@ export function KanbanColumn({
       </div>
       <div className="flex flex-1 flex-col gap-3">
         {tasks.length === 0 ? (
-          <p className="py-8 text-center text-xs text-gopass-600">
-            Arrastra tareas aquí
-          </p>
+          <p className="py-8 text-center text-xs text-gopass-600">Arrastra tareas aquí</p>
         ) : (
           tasks.map((task) => (
             <TaskCard

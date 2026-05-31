@@ -8,17 +8,13 @@ import {
   updateProject,
 } from '../api/projects.api';
 
-/** Clave de cache para invalidar proyectos de forma consistente */
 export const PROJECTS_KEY = ['projects'] as const;
 
-/**
- * React Query cachea la lista de proyectos.
- * Al volver al dashboard desde un detalle, no se re-fetcha si los datos siguen frescos.
- */
 export function useProjects() {
   return useQuery({
     queryKey: PROJECTS_KEY,
     queryFn: fetchProjects,
+
   });
 }
 

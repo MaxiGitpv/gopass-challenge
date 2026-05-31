@@ -4,7 +4,6 @@ interface AiLoadingOverlayProps {
   message?: string;
 }
 
-/** Estado de carga especial para el botón de IA — efecto neón animado */
 export function AiLoadingOverlay({
   message = 'Generando tareas con inteligencia artificial...',
 }: AiLoadingOverlayProps) {
@@ -20,11 +19,7 @@ export function AiLoadingOverlay({
         <p className="text-sm font-medium text-gopass-200">{message}</p>
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              className="h-2 w-2 animate-bounce rounded-full bg-gopass-400"
-              style={{ animationDelay: `${i * 150}ms` }}
-            />
+            <span key={i} className="h-2 w-2 animate-bounce rounded-full bg-gopass-400" style={{ animationDelay: `${i * 150}ms` }} />
           ))}
         </div>
       </div>
