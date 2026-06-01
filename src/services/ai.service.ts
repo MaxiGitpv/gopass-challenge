@@ -1,14 +1,25 @@
 import OpenAI from 'openai';
 import { env } from '../config/env';
 
-const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
-
 export interface TaskSuggestion {
   title: string;
   description: string;
 }
 
+function getOpenAIClient(): OpenAI {
+  if (!env.OPENAI_API_KEY) {
+    const error = new Error('OPENAI_API_KEY no configurada en el servidor') as Error & {
+      statusCode: number;
+    };
+    error.statusCode = 503;
+    throw error;
+  }
+
+  return new OpenAI({ apiKey: env.OPENAI_API_KEY });
+}
+
 export async function suggestTasks(projectName: string): Promise<TaskSuggestion[]> {
+  const openai = getOpenAIClient();
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     temperature: 0.5,

@@ -37,7 +37,11 @@ apiClient.interceptors.response.use(
   (error: AxiosError<ApiErrorResponse>) => {
     const status = error.response?.status;
     const message =
-      error.response?.data?.message ?? error.message ?? 'Ocurrió un error inesperado';
+      error.response?.data?.message ??
+      (error.code === 'ERR_NETWORK'
+        ? 'No se pudo conectar con el servidor. Verifica que el backend esté activo.'
+        : error.message) ??
+      'Ocurrió un error inesperado';
 
     if (status === 401) {
       const isAuthRoute =

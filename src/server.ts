@@ -21,12 +21,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Permitir peticiones sin origin (Postman, Railway healthchecks, server-to-server)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin) || origin.endsWith('.railway.app')) {
         callback(null, true);
       } else {
-        callback(new Error(`CORS: origen no permitido — ${origin}`));
+        callback(null, false);
       }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -35,14 +34,18 @@ app.use(
   })
 );
 
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({ success: true, message: 'API running' });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/projects', taskRoutes);
 
 app.use(errorHandler);
 
-const server = app.listen(env.PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${env.PORT}`);
+const server = app.listen(env.PORT, '0.0.0.0', () => {
+  console.log(`Servidor escuchando en http://0.0.0.0:${env.PORT}`);
 });
 
 const gracefulShutdown = async (signal: string): Promise<void> => {

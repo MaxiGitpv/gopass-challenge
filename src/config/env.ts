@@ -23,5 +23,6 @@ export const env: EnvConfig = {
   DATABASE_URL: requireEnv('DATABASE_URL'),
   JWT_SECRET: requireEnv('JWT_SECRET'),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? '1d',
-  OPENAI_API_KEY: requireEnv('OPENAI_API_KEY'),
+  // Opcional: solo requerida para el módulo IA; auth/login funciona sin ella
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? '',
 };

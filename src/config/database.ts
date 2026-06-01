@@ -5,13 +5,30 @@ import { env } from './env';
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
 
+function shouldUseSsl(databaseUrl: string): boolean {
+  if (databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1')) {
+    return false;
+  }
+  // Red interna de Railway — no requiere SSL
+  if (databaseUrl.includes('.railway.internal')) {
+    return false;
+  }
+  if (databaseUrl.includes('sslmode=disable')) {
+    return false;
+  }
+  return (
+    databaseUrl.includes('railway.app') ||
+    databaseUrl.includes('sslmode=require') ||
+    process.env.NODE_ENV === 'production'
+  );
+}
+
 function createPrismaClient(): PrismaClient {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const useSsl = shouldUseSsl(env.DATABASE_URL);
 
   const pool = new Pool({
     connectionString: env.DATABASE_URL,
-    // Railway PostgreSQL requiere SSL en conexiones externas
-    ...(isProduction && { ssl: { rejectUnauthorized: false } }),
+    ...(useSsl && { ssl: { rejectUnauthorized: false } }),
   });
   const adapter = new PrismaPg(pool);
 
