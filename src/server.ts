@@ -11,7 +11,29 @@ const app: Application = express();
 
 app.use(express.json());
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'https://projectgopass.up.railway.app',
+  process.env.FRONTEND_URL,
+].filter(Boolean) as string[];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Permitir peticiones sin origin (Postman, Railway healthchecks, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin) || origin.endsWith('.railway.app')) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origen no permitido — ${origin}`));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false,
+  })
+);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);

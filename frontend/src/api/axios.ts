@@ -2,9 +2,17 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { toast } from 'sonner';
 import type { ApiErrorResponse } from '../types';
 
-export const apiClient = axios.create({
+function resolveApiUrl(): string {
+  // 1. Variable de entorno de build (Railway: VITE_API_URL en el servicio frontend)
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  // 2. Producción sin env var → URL directa del backend en Railway
+  if (import.meta.env.PROD) return 'https://backend-production-3158.up.railway.app/api';
+  // 3. Desarrollo local → proxy de Vite redirige /api → localhost:3000
+  return '/api';
+}
 
-  baseURL: import.meta.env.VITE_API_URL ?? '/api',
+export const apiClient = axios.create({
+  baseURL: resolveApiUrl(),
   headers: { 'Content-Type': 'application/json' },
   timeout: 30_000,
 });

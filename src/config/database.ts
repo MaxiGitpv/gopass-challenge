@@ -6,8 +6,13 @@ import { env } from './env';
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined };
 
 function createPrismaClient(): PrismaClient {
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  const pool = new Pool({ connectionString: env.DATABASE_URL });
+  const pool = new Pool({
+    connectionString: env.DATABASE_URL,
+    // Railway PostgreSQL requiere SSL en conexiones externas
+    ...(isProduction && { ssl: { rejectUnauthorized: false } }),
+  });
   const adapter = new PrismaPg(pool);
 
   return new PrismaClient({
