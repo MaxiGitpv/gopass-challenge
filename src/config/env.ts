@@ -13,6 +13,7 @@ interface EnvConfig {
 function requireEnv(key: string): string {
   const value = process.env[key];
   if (!value) {
+    console.error(`[env] FALTA variable obligatoria: ${key}`);
     throw new Error(`Variable de entorno obligatoria no definida: ${key}`);
   }
   return value;
