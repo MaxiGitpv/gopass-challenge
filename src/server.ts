@@ -7,6 +7,12 @@ import { projectRoutes } from './routes/project.routes';
 import { taskRoutes } from './routes/task.routes';
 import { errorHandler } from './middlewares/errorHandler.middleware';
 
+console.log('[boot] Starting GoPass API...');
+console.log('[boot] NODE_ENV:', process.env.NODE_ENV ?? 'undefined');
+console.log('[boot] PORT:', env.PORT);
+console.log('[boot] DATABASE_URL set:', Boolean(env.DATABASE_URL));
+console.log('[boot] JWT_SECRET set:', Boolean(env.JWT_SECRET));
+
 const app: Application = express();
 
 app.use(express.json());
@@ -33,6 +39,10 @@ app.use(
     credentials: false,
   })
 );
+
+app.get('/', (_req, res) => {
+  res.status(200).json({ success: true, message: 'GoPass API' });
+});
 
 app.get('/api/health', (_req, res) => {
   res.status(200).json({ success: true, message: 'API running' });
