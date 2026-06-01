@@ -9,9 +9,8 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "prisma generate && tsx watch src/server.ts",
-    "build": "prisma generate && tsc",
-    "start": "npm run start:prod",
-    "start:prod": "node scripts/start-production.mjs",
+    "build": "prisma generate && tsc && npx prisma migrate deploy",
+    "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev && prisma generate",
     "prisma:studio": "prisma studio"
