@@ -4,6 +4,7 @@ export function getRouteParam(
   params: Record<string, string | string[]>,
   key: string
 ): string {
+  // Express 5 tipa params como string | string[]
   const value = params[key];
 
   if (typeof value === 'string') {
@@ -18,6 +19,7 @@ export function getRouteParam(
 }
 
 export function getAuthUserId(req: Request): string {
+  // Inyectado por authenticate tras validar JWT
   if (!req.userId) {
     throw new Error('Usuario no autenticado');
   }

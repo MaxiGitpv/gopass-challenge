@@ -9,7 +9,7 @@ function shouldUseSsl(databaseUrl: string): boolean {
   if (databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1')) {
     return false;
   }
-  // Red interna de Railway — no requiere SSL
+  // Host interno de Railway — conexión sin TLS
   if (databaseUrl.includes('.railway.internal')) {
     return false;
   }
@@ -41,6 +41,7 @@ function createPrismaClient(): PrismaClient {
 export const prisma: PrismaClient =
   globalForPrisma.prisma ?? createPrismaClient();
 
+// Evita múltiples instancias en hot-reload (tsx watch)
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
 }

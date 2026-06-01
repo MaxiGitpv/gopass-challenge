@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { env } from '../config/env';
 
+// Dependencia externa: OpenAI API
 export interface TaskSuggestion {
   title: string;
   description: string;

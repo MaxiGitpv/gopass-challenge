@@ -1,7 +1,7 @@
 declare global {
   namespace Express {
     interface Request {
-      userId?: string;
+      userId?: string; // Asignado en auth.middleware tras validar JWT
     }
   }
 }

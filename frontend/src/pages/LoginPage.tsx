@@ -36,7 +36,6 @@ export function LoginPage() {
           required
           autoComplete="current-password"
         />
-        {}
         <Button type="submit" fullWidth isLoading={login.isPending}>
           Entrar
         </Button>

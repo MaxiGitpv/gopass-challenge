@@ -17,7 +17,6 @@ export function AppRouter() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          {}
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
         </Route>
 

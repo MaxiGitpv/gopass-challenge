@@ -15,6 +15,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
   try {
     const payload = verifyToken(token);
 
+    // userId del payload JWT — nunca del body
     req.userId = payload.userId;
     next();
   } catch (error) {

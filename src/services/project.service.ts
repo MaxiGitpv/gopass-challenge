@@ -58,6 +58,7 @@ export async function getProjectsByUser(userId: string): Promise<ProjectWithTask
 
   const projectIds = projects.map((p) => p.id);
 
+  // Una sola query agregada — evita N+1 por proyecto
   const grouped = await prisma.task.groupBy({
     by: ['projectId', 'status'],
     where: { projectId: { in: projectIds } },

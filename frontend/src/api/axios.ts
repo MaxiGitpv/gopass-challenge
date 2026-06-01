@@ -3,11 +3,10 @@ import { toast } from 'sonner';
 import type { ApiErrorResponse } from '../types';
 
 function resolveApiUrl(): string {
-  // 1. Variable de entorno de build (Railway: VITE_API_URL en el servicio frontend)
   if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
-  // 2. Producción sin env var → URL directa del backend en Railway
+  // Fallback prod — backend Railway si no hay VITE_API_URL en el build
   if (import.meta.env.PROD) return 'https://backend-production-3158.up.railway.app/api';
-  // 3. Desarrollo local → proxy de Vite redirige /api → localhost:3000
+  // Dev: proxy Vite (/api → localhost:3000)
   return '/api';
 }
 
@@ -19,11 +18,9 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-
     const token = localStorage.getItem('token');
 
     if (token) {
-
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -49,13 +46,11 @@ apiClient.interceptors.response.use(
         window.location.pathname.startsWith('/register');
 
       if (!isAuthRoute) {
-
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';
         toast.error('Tu sesión ha expirado. Inicia sesión nuevamente.');
       } else {
-
         toast.error(message);
       }
     } else {

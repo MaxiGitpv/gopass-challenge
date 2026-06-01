@@ -14,6 +14,7 @@ import { PROJECTS_KEY } from './useProjects';
 export const tasksKey = (projectId: string) => ['tasks', projectId] as const;
 
 function invalidateProjectCounts(queryClient: ReturnType<typeof useQueryClient>) {
+  // Invalida el caché del dashboard para refrescar contadores por proyecto
   queryClient.invalidateQueries({ queryKey: PROJECTS_KEY });
 }
 

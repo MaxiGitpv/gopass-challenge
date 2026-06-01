@@ -7,10 +7,8 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {}
     <QueryProvider>
       <AppRouter />
-      {}
       <Toaster
         position="top-right"
         richColors

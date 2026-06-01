@@ -13,6 +13,7 @@ export const taskRoutes: Router = Router();
 
 taskRoutes.use(authenticate);
 
+// /suggestions debe declararse antes de /:taskId
 taskRoutes.post('/:projectId/tasks/suggestions', getTaskSuggestions);
 
 taskRoutes.get('/:projectId/tasks', listTasks);
