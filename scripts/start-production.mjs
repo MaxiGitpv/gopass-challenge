@@ -1,6 +1,17 @@
 import { execSync, spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 
+const MAX_RETRIES = 5;
+const RETRY_DELAY_MS = 5000;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function runMigrations() {
+  execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+}
+
 console.log('[start] GoPass backend boot sequence');
 console.log('[start] cwd:', process.cwd());
 console.log('[start] NODE_ENV:', process.env.NODE_ENV ?? 'undefined');
@@ -16,11 +27,24 @@ if (!existsSync('dist/server.js')) {
 
 console.log('[start] Running database migrations...');
 
-try {
-  execSync('npx prisma migrate deploy', { stdio: 'inherit' });
-  console.log('[start] Migrations applied successfully.');
-} catch {
-  console.error('[start] Migration failed — check DATABASE_URL in Railway backend service.');
+let migrated = false;
+for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+  try {
+    runMigrations();
+    migrated = true;
+    console.log('[start] Migrations applied successfully.');
+    break;
+  } catch {
+    console.error(`[start] Migration attempt ${attempt}/${MAX_RETRIES} failed.`);
+    if (attempt < MAX_RETRIES) {
+      console.log(`[start] Retrying in ${RETRY_DELAY_MS / 1000}s (Postgres may still be starting)...`);
+      await sleep(RETRY_DELAY_MS);
+    }
+  }
+}
+
+if (!migrated) {
+  console.error('[start] All migration attempts failed — check DATABASE_URL in Railway backend service.');
   process.exit(1);
 }
 
