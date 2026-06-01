@@ -47,6 +47,7 @@ export function useUpdateTask(projectId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: tasksKey(projectId) });
       invalidateProjectCounts(queryClient);
+      toast.success('Tarea actualizada');
     },
   });
 }

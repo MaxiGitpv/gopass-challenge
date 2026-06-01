@@ -8,6 +8,7 @@ import { Modal } from '../components/ui/Modal';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { AiLoadingOverlay } from '../components/ui/AiLoadingOverlay';
 import { KanbanColumn } from '../components/tasks/KanbanColumn';
+import { TaskDetailModal } from '../components/tasks/TaskDetailModal';
 import { ProjectTaskCounters } from '../components/projects/ProjectTaskCounters';
 import { useProject } from '../hooks/useProjects';
 import {
@@ -17,12 +18,11 @@ import {
   useDeleteTask,
   useAiTaskSuggestions,
 } from '../hooks/useTasks';
-import type { TaskCounts, TaskStatus } from '../types';
+import type { Task, TaskCounts, TaskPriority, TaskStatus } from '../types';
 
 const KANBAN_COLUMNS: TaskStatus[] = ['PENDING', 'IN_PROGRESS', 'DONE'];
 
 export function ProjectDetailPage() {
-
   const { projectId = '' } = useParams<{ projectId: string }>();
 
   const { data: project, isLoading: loadingProject } = useProject(projectId);
@@ -34,6 +34,7 @@ export function ProjectDetailPage() {
   const aiSuggestions = useAiTaskSuggestions(projectId, project?.name ?? '');
 
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
@@ -45,7 +46,6 @@ export function ProjectDetailPage() {
       { title: title.trim(), description: description.trim() || undefined },
       {
         onSuccess: () => {
-
           setTitle('');
           setDescription('');
           setShowCreateModal(false);
@@ -73,6 +73,25 @@ export function ProjectDetailPage() {
     setDraggedTaskId(null);
   };
 
+  const handleSaveTask = (
+    taskId: string,
+    payload: {
+      title: string;
+      description?: string;
+      status: TaskStatus;
+      priority: TaskPriority;
+    }
+  ) => {
+    updateTask.mutate(
+      { taskId, payload },
+      {
+        onSuccess: () => {
+          setSelectedTask(null);
+        },
+      }
+    );
+  };
+
   const tasksByStatus = (status: TaskStatus) =>
     tasks?.filter((t) => t.status === status) ?? [];
 
@@ -96,11 +115,11 @@ export function ProjectDetailPage() {
     <div className="min-h-screen">
       <Navbar title={project?.name ?? 'Proyecto'} showBack />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6">
         {!loadingTasks && <ProjectTaskCounters counts={taskCounts} />}
 
-        <div className="mb-6 flex flex-wrap items-center gap-3">
-          <Button onClick={() => setShowCreateModal(true)}>
+        <div className="mb-4 flex flex-wrap items-center gap-2 sm:mb-6 sm:gap-3">
+          <Button onClick={() => setShowCreateModal(true)} className="!py-2 text-sm">
             <Plus className="h-4 w-4" />
             Nueva tarea
           </Button>
@@ -109,21 +128,24 @@ export function ProjectDetailPage() {
             onClick={() => aiSuggestions.mutate()}
             isLoading={aiSuggestions.isPending}
             disabled={!project?.name}
+            className="!py-2 text-sm"
           >
             <Sparkles className="h-4 w-4" />
-            Generar Tareas con IA
+            <span className="hidden sm:inline">Generar Tareas con IA</span>
+            <span className="sm:hidden">IA</span>
           </Button>
         </div>
 
         {loadingTasks ? (
           <LoadingSpinner message="Cargando tareas..." />
         ) : (
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-3">
             {KANBAN_COLUMNS.map((status) => (
               <KanbanColumn
                 key={status}
                 status={status}
                 tasks={tasksByStatus(status)}
+                onTaskClick={setSelectedTask}
                 onDeleteTask={(id) => deleteTask.mutate(id)}
                 onDragStart={handleDragStart}
                 onDrop={handleDrop}
@@ -134,7 +156,6 @@ export function ProjectDetailPage() {
         )}
       </main>
 
-      {}
       {aiSuggestions.isPending && <AiLoadingOverlay />}
 
       <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Nueva tarea">
@@ -158,6 +179,15 @@ export function ProjectDetailPage() {
           </Button>
         </form>
       </Modal>
+
+      <TaskDetailModal
+        task={selectedTask}
+        isOpen={!!selectedTask}
+        onClose={() => setSelectedTask(null)}
+        onSave={handleSaveTask}
+        onDelete={(id) => deleteTask.mutate(id)}
+        isSaving={updateTask.isPending}
+      />
     </div>
   );
 }

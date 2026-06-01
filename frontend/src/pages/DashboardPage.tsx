@@ -63,13 +63,13 @@ export function DashboardPage() {
     <div className="min-h-screen">
       <Navbar title="Mis Proyectos" />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="mb-8 flex items-center justify-between">
+      <main className="mx-auto max-w-6xl px-3 py-4 sm:px-6 sm:py-6">
+        <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-xl font-bold text-gopass-100">Dashboard</h2>
-            <p className="text-sm text-gopass-500">Organiza y gestiona tus proyectos</p>
+            <h2 className="text-lg font-bold text-gopass-100 sm:text-xl">Dashboard</h2>
+            <p className="text-xs text-gopass-500 sm:text-sm">Organiza y gestiona tus proyectos</p>
           </div>
-          <Button onClick={() => setShowCreateModal(true)}>
+          <Button onClick={() => setShowCreateModal(true)} className="!py-2 text-sm sm:w-auto">
             <Plus className="h-4 w-4" />
             Nuevo proyecto
           </Button>
@@ -111,7 +111,7 @@ export function DashboardPage() {
                     {new Date(project.createdAt).toLocaleDateString('es-CO')}
                   </p>
                   {project.taskCounts && (
-                    <ProjectTaskCounters counts={project.taskCounts} />
+                    <ProjectTaskCounters counts={project.taskCounts} compact />
                   )}
                 </Link>
                 <div className="mt-4 flex gap-2 border-t border-white/5 pt-3">

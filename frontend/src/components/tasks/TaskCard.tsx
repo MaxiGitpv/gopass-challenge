@@ -4,6 +4,7 @@ import { TASK_PRIORITY_LABELS } from '../../types';
 
 interface TaskCardProps {
   task: Task;
+  onClick?: (task: Task) => void;
   onDelete?: (taskId: string) => void;
   onDragStart?: (e: React.DragEvent, taskId: string) => void;
 }
@@ -14,15 +15,19 @@ const priorityColors: Record<TaskPriority, string> = {
   HIGH: 'bg-red-500/20 text-red-300 border-red-500/30',
 };
 
-export function TaskCard({ task, onDelete, onDragStart }: TaskCardProps) {
+export function TaskCard({ task, onClick, onDelete, onDragStart }: TaskCardProps) {
   return (
     <div
       draggable
       onDragStart={(e) => onDragStart?.(e, task.id)}
-      className="group cursor-grab rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm transition hover:border-gopass-400/30 hover:bg-white/10 active:cursor-grabbing"
+      onClick={() => onClick?.(task)}
+      className="group cursor-pointer rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm transition hover:border-gopass-400/30 hover:bg-white/10 active:cursor-grabbing sm:p-4"
     >
       <div className="flex items-start gap-2">
-        <GripVertical className="mt-0.5 h-4 w-4 shrink-0 text-gopass-600 opacity-0 transition group-hover:opacity-100" />
+        <GripVertical
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-grab text-gopass-600 opacity-0 transition group-hover:opacity-100"
+          onClick={(e) => e.stopPropagation()}
+        />
         <div className="min-w-0 flex-1">
           <h4 className="font-medium text-gopass-100">{task.title}</h4>
           {task.description && (
@@ -36,7 +41,10 @@ export function TaskCard({ task, onDelete, onDragStart }: TaskCardProps) {
         </div>
         {onDelete && (
           <button
-            onClick={() => onDelete(task.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(task.id);
+            }}
             className="rounded-lg p-1 text-gopass-600 opacity-0 transition hover:bg-red-500/20 hover:text-red-400 group-hover:opacity-100"
             aria-label="Eliminar tarea"
           >

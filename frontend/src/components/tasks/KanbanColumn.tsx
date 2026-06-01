@@ -5,6 +5,7 @@ import { TaskCard } from './TaskCard';
 interface KanbanColumnProps {
   status: TaskStatus;
   tasks: Task[];
+  onTaskClick: (task: Task) => void;
   onDeleteTask: (taskId: string) => void;
   onDragStart: (e: React.DragEvent, taskId: string) => void;
   onDrop: (e: React.DragEvent, status: TaskStatus) => void;
@@ -26,6 +27,7 @@ const dotColors: Record<TaskStatus, string> = {
 export function KanbanColumn({
   status,
   tasks,
+  onTaskClick,
   onDeleteTask,
   onDragStart,
   onDrop,
@@ -52,6 +54,7 @@ export function KanbanColumn({
             <TaskCard
               key={task.id}
               task={task}
+              onClick={onTaskClick}
               onDelete={onDeleteTask}
               onDragStart={onDragStart}
             />

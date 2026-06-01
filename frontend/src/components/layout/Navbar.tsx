@@ -20,20 +20,25 @@ export function Navbar({ title = 'GoPass', showBack = false, backTo = '/dashboar
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-gopass-950/60 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <div className="flex items-center gap-3">
-          {showBack && (
-            <Link to={backTo} className="rounded-lg p-2 text-gopass-400 transition hover:bg-white/10 hover:text-gopass-200">
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
+    <header className="sticky top-0 z-40 border-b border-white/5 bg-gopass-950/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-2.5">
+        {showBack && (
+          <Link
+            to={backTo}
+            className="shrink-0 rounded-lg p-1.5 text-gopass-400 transition hover:bg-white/10 hover:text-gopass-200 sm:p-2"
+          >
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+          </Link>
+        )}
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-sm font-bold leading-tight text-gopass-300 sm:text-base md:text-lg">
+            {title}
+          </h1>
+          {user && (
+            <p className="hidden truncate text-xs text-gopass-500 sm:block">{user.email}</p>
           )}
-          <div>
-            <h1 className="text-lg font-bold text-gopass-300">{title}</h1>
-            {user && <p className="text-xs text-gopass-500">{user.email}</p>}
-          </div>
         </div>
-        <Button variant="ghost" onClick={handleLogout} className="!px-3">
+        <Button variant="ghost" onClick={handleLogout} className="!shrink-0 !px-2 !py-1.5 sm:!px-3">
           <LogOut className="h-4 w-4" />
           <span className="hidden sm:inline">Salir</span>
         </Button>
